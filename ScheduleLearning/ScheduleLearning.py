@@ -10,7 +10,7 @@ from geopy.geocoders import Nominatim
 import scipy.cluster.hierarchy as sch
 from sklearn.cluster import AgglomerativeClustering
 import gmplot
-from sklearn.neighbors.nearest_centroid import NearestCentroid
+from sklearn.neighbors import NearestCentroid
 
 def loadData(path):
     with open(path) as f:
@@ -65,11 +65,15 @@ def createDataStructure(data):
             timestamps.append(timeToAppend)
             latitudes.append(latitudeToAppend)
             longitudes.append(longitudeToAppend)
-        elif(timeToAppend > timestamps[-1] and not transitionalState):
-            timestamps.append(timeToAppend)
-            latitudes.append(latitudeToAppend)
-            longitudes.append(longitudeToAppend)
-            #time = convertToUTC(ts)
+        else:
+            try:
+                if(timeToAppend > timestamps[-1] and not transitionalState):
+                    timestamps.append(timeToAppend)
+                    latitudes.append(latitudeToAppend)
+                    longitudes.append(longitudeToAppend)
+            except IndexError:
+                print("No Values that match criteria!")
+                pass
     dataStructure = np.array(list(zip(timestamps, latitudes, longitudes)))
     return dataStructure, latitudes, longitudes, timestamps
 
@@ -116,7 +120,7 @@ def createMap(filePath, latitudes, longitudes):
     gmap3.draw(filePath)
 
 locator = Nominatim(user_agent='google')
-filePath = "TakeoutSR/Location History/Location History.json"
+filePath = "TakeoutMR/Location History/Location History.json"
 data = loadData(filePath)
 len(data['locations'])
 state = ['']
@@ -127,8 +131,8 @@ for i in range(len(data['locations'])):
     except:
         pass
 
-startDate = datetime(2017, 1, 1, 0, 0, 0)
-endDate = datetime(2017, 6, 1, 0, 0, 0)
+startDate = datetime(2020, 7, 1, 0, 0, 0)
+endDate = datetime(2020, 8, 1, 0, 0, 0)
 timestampstart = convertToTimestamp(startDate)
 timestampend = convertToTimestamp(endDate)
 day1 = roundTimestamp(int(timestampstart), 24*60*60)
@@ -155,7 +159,7 @@ createAndShowDendogram(X)
 model, predictions = createModelAndPredict(X, 2)
 centroids = getCentroids(X, predictions)
 plotandShow3dGraph(X, predictions)
-createMap("hc_map_2020_7_2020_8_SR.html", latitudes, longitudes)
+createMap("hc_map_2020_07_2020_08_MR_test.html", latitudes, longitudes)
 
 for i in range(len(centroids)):
     print(getAddress(centroids[i][1], centroids[i][2]))
