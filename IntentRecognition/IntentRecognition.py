@@ -7,8 +7,8 @@ import pandas as pd
 import unicodedata
 
 # Importing the dataset
-training_dataset = pd.read_csv('data/IntentRecognition/training.tsv', delimiter = '\t', quoting = 3)
-test_dataset = pd.read_csv('data/IntentRecognition/test.tsv', delimiter = '\t', quoting = 3)
+training_dataset = pd.read_csv('data/training.tsv', delimiter = '\t', quoting = 3)
+test_dataset = pd.read_csv('data/test.tsv', delimiter = '\t', quoting = 3)
 
 # Cleaning the dataset
 import re

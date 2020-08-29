@@ -18,8 +18,8 @@ def make_list(file, intent):
 
 list = []
 test_list = []
-files = ['data/IntentRecognition/train/train_AddToPlaylist_full.json', 'data/IntentRecognition/train/train_BookRestaurant_full.json', 'data/IntentRecognition/train/train_GetWeather_full.json', 'data/IntentRecognition/train/train_PlayMusic_full.json', 'data/IntentRecognition/train/train_RateBook_full.json', 'data/IntentRecognition/train/train_SearchCreativeWork_full.json', 'data/IntentRecognition/train/train_SearchScreeningEvent_full.json']
-test_files = ['data/IntentRecognition/test/validate_AddToPlaylist.json', 'data/IntentRecognition/test/validate_BookRestaurant.json', 'data/IntentRecognition/test/validate_GetWeather.json', 'data/IntentRecognition/test/validate_PlayMusic.json', 'data/IntentRecognition/test/validate_RateBook.json', 'data/IntentRecognition/test/validate_SearchCreativeWork.json', 'data/IntentRecognition/test/validate_SearchScreeningEvent.json']
+files = ['data/train/train_AddToPlaylist_full.json', 'data/train/train_BookRestaurant_full.json', 'data/train/train_GetWeather_full.json', 'data/train/train_PlayMusic_full.json', 'data/train/train_RateBook_full.json', 'data/train/train_SearchCreativeWork_full.json', 'data/train/train_SearchScreeningEvent_full.json']
+test_files = ['data/test/validate_AddToPlaylist.json', 'data/test/validate_BookRestaurant.json', 'data/test/validate_GetWeather.json', 'data/test/validate_PlayMusic.json', 'data/test/validate_RateBook.json', 'data/test/validate_SearchCreativeWork.json', 'data/test/validate_SearchScreeningEvent.json']
 
 for i in range(len(files)):
     list += make_list(files[i], files[i].split(sep = "_")[1])
@@ -30,5 +30,5 @@ for i in range(len(test_files)):
 array = pd.DataFrame(list)
 test_array = pd.DataFrame(test_list)
 
-array.to_csv('training.tsv', sep='\t', index = False, header = ['text', 'intent'])
-test_array.to_csv('test.tsv', sep='\t', index = False, header = ['text', 'intent'])
+array.to_csv('data/training.tsv', sep='\t', index = False, header = ['text', 'intent'])
+test_array.to_csv('data/test.tsv', sep='\t', index = False, header = ['text', 'intent'])
