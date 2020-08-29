@@ -40,6 +40,7 @@ def getCentroids(data, predictions):
     clf = NearestCentroid()
     clf.fit(data, predictions)
     return clf.centroids_
+
 #states = ['STILL', 'IN_VEHICLE', 'ON_FOOT', 'ON_BICYCLE', 'TILTING', 'UNKNOWN', 'EXITING_VEHICLE']
 def createDataStructure(data):
     latitudes = []
@@ -61,7 +62,7 @@ def createDataStructure(data):
         longitudeToAppend = entry["longitudeE7"]/(10**7)
         while(timeToAppend > day8):
             timeToAppend -= oneWeek
-        if(len(latitudes) == 0 and not transitionalState):
+        if(len(latitudes) == 0 and len(timestamps) == 0 and timeToAppend is not None and not transitionalState):
             timestamps.append(timeToAppend)
             latitudes.append(latitudeToAppend)
             longitudes.append(longitudeToAppend)
