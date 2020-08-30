@@ -14,7 +14,6 @@ from sklearn.cluster import AgglomerativeClustering
 import gmplot
 from sklearn.neighbors import NearestCentroid
 
-
 def loadData(path):
     with open(path) as f:
         data = json.load(f)
@@ -93,14 +92,52 @@ def createModelAndPredict(data, clusters):
     modelPredictions = model.fit_predict(X)
     return model, modelPredictions
 
+
+
+#import plotly.plotly as py
+import plotly.graph_objs as go
+from plotly import offline
+offline.init_notebook_mode()
+
 def plotandShow3dGraph(data, predictions):
+
+    scatter_data = [go.Scatter3d(x=timestamps, y=latitudes, z=longitudes)]
+
+    layout = go.Layout(
+        scene=go.layout.Scene(
+            xaxis=go.layout.scene.XAxis(
+                spikecolor='#1fe5bd',
+                spikesides=False,
+                spikethickness=6,
+            ),
+            yaxis=go.layout.scene.YAxis(
+                spikecolor='#1fe5bd',
+                spikesides=False,
+                spikethickness=6,
+            ),
+            zaxis=go.layout.scene.ZAxis(
+                spikecolor='#1fe5bd',
+                spikethickness=6,
+            ),
+        ),
+    )
+    fig = go.Figure(data=scatter_data, layout=layout)
+    fig.update_layout(scene = dict(
+                        xaxis_title='Timestamps',
+                        #xaxis = dict(range=[timestampstart,timestampend]),
+                        yaxis_title='Latitudes',
+                        zaxis_title='Longitudes'),
+                        width=700,
+                        margin=dict(r=20, b=10, l=10, t=10))
+    offline.iplot(fig)
+
     fignum = 1
     fig = plt.figure(fignum, figsize=(10, 9))
     colors = ['red', 'blue', 'yellow', 'violet']
     centroid_color = "green"
     ax = Axes3D(fig, rect=[0, 0, .95, 1], elev=30, azim=50)
     for i in range(len(centroids)):
-        ax.scatter(data[predictions == i, 0], data[predictions == i, 1], data[predictions == i, 2], s=5, c=colors[i], label = 'Cluster ' + str(i+1))
+        ax.scatter(data[predictions == i, 0], data[predictions == i, 1], data[predictions == i, 2], s=5, c=colors[i], label = 'Cluster ' + str(i+1), picker=True)
         ax.scatter(centroids[i][0], centroids[i][1], centroids[i][2], s=500, c=centroid_color, label = 'Centroids')
     ax.w_xaxis.set_ticklabels([])
     ax.w_yaxis.set_ticklabels([])
@@ -111,6 +148,7 @@ def plotandShow3dGraph(data, predictions):
     ax.set_title('Location over time')
     ax.dist = 10
     ax.legend()
+
     plt.show()
 
 def createMap(filePath, latitudes, longitudes):
@@ -124,7 +162,7 @@ def createMap(filePath, latitudes, longitudes):
     gmap3.draw(filePath)
 
 locator = Nominatim(user_agent='google')
-filePath = "TakeoutMR/Location History/Location History.json"
+filePath = "TakeoutAR/Location History/Location History.json"
 data = loadData(filePath)
 len(data['locations'])
 state = ['']
@@ -135,8 +173,8 @@ for i in range(len(data['locations'])):
     except:
         pass
 
-startDate = datetime(2020, 7, 1, 0, 0, 0)
-endDate = datetime(2020, 8, 1, 0, 0, 0)
+startDate = datetime(2018, 6, 1, 0, 0, 0)
+endDate = datetime(2018, 7, 1, 0, 0, 0)
 timestampstart = convertToTimestamp(startDate)
 timestampend = convertToTimestamp(endDate)
 day1 = roundTimestamp(int(timestampstart), 24*60*60)
@@ -163,7 +201,7 @@ createAndShowDendogram(X)
 model, predictions = createModelAndPredict(X, 2)
 centroids = getCentroids(X, predictions)
 plotandShow3dGraph(X, predictions)
-createMap("hc_map_2020_07_2020_08_MR_test.html", latitudes, longitudes)
-
+createMap("hc_map_2020_07_2020_08_AR_test.html", latitudes, longitudes)
+X[-1]
 for i in range(len(centroids)):
     print(getAddress(centroids[i][1], centroids[i][2]))
