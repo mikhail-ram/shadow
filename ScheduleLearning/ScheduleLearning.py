@@ -3,6 +3,8 @@ import json
 import numpy as np
 import pandas as pd
 from datetime import datetime, timezone
+import matplotlib
+matplotlib.use('Qt5Agg')
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.pyplot as plt
 import geopy
@@ -11,6 +13,7 @@ import scipy.cluster.hierarchy as sch
 from sklearn.cluster import AgglomerativeClustering
 import gmplot
 from sklearn.neighbors import NearestCentroid
+
 
 def loadData(path):
     with open(path) as f:
@@ -164,23 +167,3 @@ createMap("hc_map_2020_07_2020_08_MR_test.html", latitudes, longitudes)
 
 for i in range(len(centroids)):
     print(getAddress(centroids[i][1], centroids[i][2]))
-
-'''
-latitudes1 = []
-timestamps1 = []
-for i in range(1000):
-    time = roundTimestamp(int(data["locations"][i]["timestampMs"][:10]), 60*60)
-    #print("Initial Time: "+str(time))
-    while(time > day1 + 7*24*60*60):
-        time -= 7*24*60*60
-    if(len(latitudes1) == 0 and time < timestampend):
-        print("Appended Time First: "+str(time))
-        print(convertToUTC(time))
-        timestamps1.append(time)
-        latitudes1.append(data["locations"][i]["latitudeE7"]/(10**7))
-    elif(time < timestampend and time > timestamps1[-1]):
-        print("Appended Time: "+str(time))
-        print(convertToUTC(time))
-        timestamps1.append(time)
-        latitudes1.append(data["locations"][i]["latitudeE7"]/(10**7))
-'''
