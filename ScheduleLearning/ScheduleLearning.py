@@ -3,10 +3,6 @@ import json
 import numpy as np
 import pandas as pd
 from datetime import datetime, timezone
-import matplotlib
-matplotlib.use('Qt5Agg')
-from mpl_toolkits.mplot3d import Axes3D
-import matplotlib.pyplot as plt
 import geopy
 from geopy.geocoders import Nominatim
 import scipy.cluster.hierarchy as sch
